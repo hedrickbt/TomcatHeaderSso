@@ -26,6 +26,7 @@ import org.apache.tomcat.util.buf.MessageBytes;
  */
 
 public class TomcatHeaderAuthenticator extends AuthenticatorBase {
+    private static final String TOMCAT_HEADER_AUTH = "TOMCAT_HEADER_AUTH";
 	private static final String ROLE_HEADER = "role-header";
 	private static final String USERNAME_HEADER = "username-header";
 	private static final String ROLE_HEADER_PARSING_CLASS_NAME = "com.millamilla.tomcat.header.sso.CommaRoleHeaderParser";
@@ -117,7 +118,7 @@ public class TomcatHeaderAuthenticator extends AuthenticatorBase {
 
 		// Have we already authenticated someone?
 		Principal principal = request.getUserPrincipal();
-		String ssoId = (String) request.getNote(Constants.REQ_SSOID_NOTE);
+		String ssoId = (String) request.getNote(org.apache.catalina.authenticator.Constants.REQ_SSOID_NOTE);
 		if (principal != null) {
 			log.debug("already-authenticated");
 			if (log.isDebugEnabled())
@@ -196,7 +197,7 @@ public class TomcatHeaderAuthenticator extends AuthenticatorBase {
 						parsedUsername, "no-password", parsedRoles);
 
 				register(request, response, principal,
-						Constants.TOMCAT_HEADER_AUTH, parsedUsername, "no-password");
+						TOMCAT_HEADER_AUTH, parsedUsername, "no-password");
 				
 				return (true);
 			} catch (ClassNotFoundException e) {
